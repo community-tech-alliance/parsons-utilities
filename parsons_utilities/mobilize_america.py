@@ -1,6 +1,6 @@
 from requests import request as _request
-from table import Table
-from datetime import date_to_timestamp
+from parsons_utilities.table import Table
+from parsons_utilities.datetime import date_to_timestamp
 import petl
 import re
 import os

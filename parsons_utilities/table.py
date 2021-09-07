@@ -1,5 +1,5 @@
-from etl import ETL
-from tofrom import ToFrom
+from parsons_utilities.etl import ETL
+from parsons_utilities.tofrom import ToFrom
 import files
 import petl
 import pickle

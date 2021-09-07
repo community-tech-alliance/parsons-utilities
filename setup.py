@@ -10,7 +10,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name='parsons-utilities',
-    version='0.0.1',
+    version='0.0.2',
     author='Emily Cogsdill',
     author_email='emily.cogsdill@techallies.org',
     description='Parsons modules for Airbyte deployment',
