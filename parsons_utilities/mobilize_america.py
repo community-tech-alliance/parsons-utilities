@@ -94,7 +94,8 @@ class MobilizeAmerica(object):
         return Table(self._request(self.uri + 'organizations',
                                             args={
                                                 'updated_since': date_to_timestamp(updated_since)
-                                            }))
+                                            },
+                                   paginate=True))
 
     def get_events(self, organization_id=None, updated_since=None, timeslot_start=None,
                    timeslot_end=None, timeslots_table=False, max_timeslots=None):
