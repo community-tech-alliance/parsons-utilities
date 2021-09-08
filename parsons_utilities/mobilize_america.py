@@ -101,16 +101,21 @@ class MobilizeAmerica(object):
                 See :ref:`parsons-table` for output options.
         """
 
+        valid_output_formats = ['Parsons', 'JSON']
+
+        if output_format not in valid_output_formats:
+            raise ValueError(f'Invalid output_format (must be one of: {self.output_formats}')
+
         json_response = self._request(self.uri + 'organizations',
                                    args={
                                        'updated_since': date_to_timestamp(updated_since)
                                    })
 
-        if output_format='Parsons':
+        if output_format=='Parsons':
 
             return Table(json_response)
 
-        elif output_format='JSON':
+        elif output_format=='JSON':
 
             return json_response
 
@@ -151,6 +156,11 @@ class MobilizeAmerica(object):
             Parsons Table or dict or Parsons Tables
                 See :ref:`parsons-table` for output options.
         """
+
+        valid_output_formats = ['Parsons', 'JSON']
+
+        if output_format not in valid_output_formats:
+            raise ValueError(f'Invalid output_format (must be one of: {self.output_formats}')
 
         if isinstance(organization_id, (str, int)):
             organization_id = [organization_id]
