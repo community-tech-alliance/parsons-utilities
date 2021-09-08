@@ -58,7 +58,7 @@ class MobilizeAmerica(object):
 
         return json
 
-    def organizations(self, updated_since=None):
+    def get_organizations_json(self, updated_since=None):
         """
         Return all active organizations on the platform.
 
@@ -79,12 +79,12 @@ class MobilizeAmerica(object):
                                  'updated_since': date_to_timestamp(updated_since)
                              })
 
-        output_dict = dict()
-        for i in range(0, len(json_response)):
-            row_id = str(i)
-            output_dict[row_id] = json_response[i]
+        #output_dict = dict()
+        #for i in range(0, len(json_response)):
+        #    row_id = str(i)
+        #    output_dict[row_id] = json_response[i]
 
-        return output_dict
+        return json_response
 
     def get_events(self, organization_id=None, updated_since=None, timeslot_start=None,
                    timeslot_end=None, timeslots_table=False, max_timeslots=None, output_format='Parsons'):
