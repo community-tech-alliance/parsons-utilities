@@ -30,7 +30,7 @@ class MobilizeAmerica(object):
             logger.info('Mobilize America API Key missing. Calling methods that rely on private'
                         ' endpoints will fail.')
 
-    def _request(self, url, req_type='GET', post_data=None, args=None, auth=False):
+    def _request(self, url, req_type='GET', post_data=None, args=None, auth=False, suppress_args_on_paginate=False): #suppress_args_on_paginate added 9/8/21 to correct for behavior on some endpoints where the "next" URL already contains the query params that "args" wants to pass in (causing the request to fail)
         if auth:
 
             if not self.api_key:
@@ -42,21 +42,52 @@ class MobilizeAmerica(object):
             header = None
 
         r = _request(req_type, url, json=post_data, params=args, headers=header)
+        #print(f"Running: r = _request(method='{req_type}', url='{url}', json={post_data}, params={args},headers={header})")
 
         if 'error' in r.json():
             raise ValueError('API Error:' + str(r.json()['error']))
 
         json = r.json()['data']
-
-        print(f"URL: {url}")
-        print(f"NEXT: {r.json()['next']}")
+        #print(f"Running: json = r.json()['data']")
 
         while r.json()['next']:
             url = r.json()['next']
+            if suppress_args_on_paginate:
+                args=None
             r = _request(req_type, url, json=post_data, params=args, headers=header)
-            json.extend(r)
+            #print(f"Running: r = _request(method='{req_type}', url='{url}', json={post_data}, params={args},headers={header})")
+            #print(f"Running: json.extend(r.json()['data'])")
+            json.extend(r.json()['data'])
 
         return json
+
+    def _time_parse(self, time_arg):
+        # Parse the date filters
+
+        trans = [('>=', 'gte_'),
+                 ('>', 'gt_'),
+                 ('<=', 'lte_'),
+                 ('<', 'lt_')]
+
+        if time_arg:
+
+            time = re.sub('<=|<|>=|>', '', time_arg)
+            time = date_to_timestamp(time)
+            time_filter = re.search('<=|<|>=|>', time_arg).group()
+
+            for i in trans:
+                if time_filter == i[0]:
+                    return i[1] + str(time)
+
+            raise ValueError('Invalid time operator. Must be one of >=, >, <= or >.')
+
+        return time_arg
+
+    '''
+    **************************************
+    ****************ROUTES****************
+    **************************************
+    '''
 
     def get_organizations_json(self, updated_since=None):
         """
@@ -66,25 +97,14 @@ class MobilizeAmerica(object):
             updated_since: str
                 Filter to organizations updated since given date (ISO Date)
         `Returns`
-            JSON of paginated response data.
-
-        `Sample usage`
-
-        mob = MobilizeAmerica()
-        organizations_json = mob.get_organizations_json(updated_since='2021-09-01')
+            Parsons Table
+                See :ref:`parsons-table` for output options.
         """
 
-        json_response = self._request(self.uri + 'organizations',
-                             args={
-                                 'updated_since': date_to_timestamp(updated_since)
-                             })
-
-        #output_dict = dict()
-        #for i in range(0, len(json_response)):
-        #    row_id = str(i)
-        #    output_dict[row_id] = json_response[i]
-
-        return json_response
+        return self._request(self.uri + 'organizations',
+                                   args={
+                                       'updated_since': date_to_timestamp(updated_since)
+                                   })
 
     def get_events(self, organization_id=None, updated_since=None, timeslot_start=None,
                    timeslot_end=None, timeslots_table=False, max_timeslots=None, output_format='Parsons'):
@@ -119,8 +139,8 @@ class MobilizeAmerica(object):
                 running and want to ensure that the column headers remain static.
 
         `Returns`
-            either Parsons Table or dict or Parsons Tables (See :ref:`parsons-table` for output options)
-            OR a JSON object (e.g. for use in Airbyte integration)
+            Parsons Table or dict or Parsons Tables
+                See :ref:`parsons-table` for output options.
         """
 
         if isinstance(organization_id, (str, int)):
@@ -144,7 +164,7 @@ class MobilizeAmerica(object):
 
             if timeslots_table:
 
-                timeslots_tbl = tbl.long_table(['id'], 'timeslots', {'id': 'event_id'})
+                timeslots_tbl = tbl.long_table(['id'], 'timeslots', {'id':'event_id'})
                 return {'events': tbl, 'timeslots': timeslots_tbl}
 
             else:
@@ -156,22 +176,22 @@ class MobilizeAmerica(object):
 
         if output_format == 'Parsons':
 
-            return tbl
+            return tbl #This is where the original method ends
 
         elif output_format == 'JSON':
-            # For the Airbyte integration, we need to output a JSON object
-            # To get from the Parsons table object to a JSON, we can save the table as a csv, then use petl to extract the csv and load it into a json, which we then return
+            #For the Airbyte integration, we need to output a JSON object
+            #To get from the Parsons table object to a JSON, we can save the table as a csv, then use petl to extract the csv and load it into a json, which we then return
 
-            # Write table to a CSV
+            #Write table to a CSV
             csv_filename = tbl.to_csv()
 
-            # Extract the CSV into a new petl table
+            #Extract the CSV into a new petl table
             testcsv = fromcsv(csv_filename)
 
-            # Load the petl table into a json file
-            tojson(testcsv, 'output.json')  # convert the CSV to json
+            #Load the petl table into a json file
+            tojson(testcsv, 'output.json') #convert the CSV to json
 
-            # Load the json file into a JSON object
+            #Load the json file into a JSON object
             f = open('output.json')
             json_output = json.load(f)
 
