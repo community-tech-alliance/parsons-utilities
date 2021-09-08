@@ -89,7 +89,7 @@ class MobilizeAmerica(object):
     **************************************
     '''
 
-    def get_organizations_json(self, updated_since=None):
+    def get_organizations(self, updated_since=None, output_format='Parsons'):
         """
         Return all active organizations on the platform.
 
@@ -101,10 +101,19 @@ class MobilizeAmerica(object):
                 See :ref:`parsons-table` for output options.
         """
 
-        return self._request(self.uri + 'organizations',
+        json_response = self._request(self.uri + 'organizations',
                                    args={
                                        'updated_since': date_to_timestamp(updated_since)
                                    })
+
+        if output_format='Parsons':
+
+            return Table(json_response)
+
+        elif output_format='JSON':
+
+            return json_response
+
 
     def get_events(self, organization_id=None, updated_since=None, timeslot_start=None,
                    timeslot_end=None, timeslots_table=False, max_timeslots=None, output_format='Parsons'):
