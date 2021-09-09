@@ -124,7 +124,7 @@ class MobilizeAmerica(object):
 
 
     def get_events(self, organization_id=None, updated_since=None, timeslot_start=None,
-                   timeslot_end=None, timeslots_table=False, max_timeslots=None, output_format='Parsons'):
+                   timeslot_end=None, timeslots_table=False, unpack_timeslots=True, max_timeslots=None, output_format='Parsons'):
         """
         Fetch all public events on the platform.
 
@@ -189,7 +189,7 @@ class MobilizeAmerica(object):
                 timeslots_tbl = tbl.long_table(['id'], 'timeslots', {'id':'event_id'})
                 return {'events': tbl, 'timeslots': timeslots_tbl}
 
-            else:
+            elif unpack_timeslots:
                 tbl.unpack_list('timeslots', replace=True, max_columns=max_timeslots)
                 cols = tbl.columns
                 for c in cols:
