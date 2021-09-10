@@ -122,7 +122,7 @@ class MobilizeAmerica(object):
 
             return json_response
 
-    def get_events_auth(self, organization_id=None, updated_since=None, timeslot_start=None,
+    def get_events(self, organization_id=None, updated_since=None, timeslot_start=None,
                                 timeslot_end=None, timeslots_table=False, unpack_timeslots=True, max_timeslots=None, zipcode=None, max_dist=None, visibility=None,
                                 exclude_full=False, is_virtual=None, event_types=None, output_format='Parsons'):
         """
