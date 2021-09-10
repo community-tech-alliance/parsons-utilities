@@ -123,10 +123,16 @@ class MobilizeAmerica(object):
             return json_response
 
 
-    def get_events(self, organization_id=None, updated_since=None, timeslot_start=None,
-                   timeslot_end=None, timeslots_table=False, unpack_timeslots=True, max_timeslots=None, output_format='Parsons'):
+    def get_events_auth(self, organization_id=None, updated_since=None, timeslot_start=None,
+                                timeslot_end=None, timeslots_table=False, unpack_timeslots=True, max_timeslots=None, zipcode=None, max_dist=None, visibility=None,
+                                exclude_full=False, is_virtual=None, event_types=None, output_format='Parsons'):
         """
-        Fetch all public events on the platform.
+        Fetch all public events for an organization. This includes both events owned
+        by the organization (as indicated by the organization field on the event object)
+        and events of other organizations promoted by this specified organization.
+
+        .. note::
+            API Key Required
 
         `Args:`
             organization_id: list or int
@@ -142,9 +148,29 @@ class MobilizeAmerica(object):
             timeslot_table: boolean
                 Return timeslots as a separate long table. Useful for extracting
                 to databases.
+            zipcode: str
+                Filter by a Events' Locations' postal code. If present, returns Events
+                sorted by distance from zipcode. If present, virtual events will not be returned.
+            max_dist: str
+                Filter Events' Locations' distance from provided zipcode.
+            visibility: str
+                Either `PUBLIC` or `PRIVATE`. Private events only return if user is authenticated;
+                if `visibility=PRIVATE` and user doesn't have permission, no events returned.
+            exclude_full: bool
+                If `exclude_full=true`, filter out full Timeslots (and Events if all of an Event's
+                Timeslots are full)
+            is_virtual: bool
+                `is_virtual=false` will return only in-person events, while `is_virtual=true` will
+                return only virtual events. If excluded, return virtual and in-person events. Note
+                that providing a zipcode also implies `is_virtual=false`.
+            event_types:enum
+                The type of the event, one of: `CANVASS`, `PHONE_BANK`, `TEXT_BANK`, `MEETING`,
+                `COMMUNITY`, `FUNDRAISER`, `MEET_GREET`, `HOUSE_PARTY`, `VOTER_REG`, `TRAINING`,
+                `FRIEND_TO_FRIEND_OUTREACH`, `DEBATE_WATCH_PARTY`, `ADVOCACY_CALL`, `OTHER`.
+                This list may expand in the future.
             max_timeslots: int
                 If not returning a timeslot table, will unpack time slots. If do not
-                set this kwarg, it will add a column for each time slot. The argument
+                set this arg, it will add a column for each time slot. The argument
                 limits the number of columns and discards any additional timeslots
                 after that.
 
@@ -171,9 +197,16 @@ class MobilizeAmerica(object):
         args = {'organization_id': organization_id,
                 'updated_since': date_to_timestamp(updated_since),
                 'timeslot_start': self._time_parse(timeslot_start),
-                'timeslot_end': self._time_parse(timeslot_end)}
+                'timeslot_end': self._time_parse(timeslot_end),
+                'zipcode': zipcode,
+                'max_dist': max_dist,
+                'visibility': visibility,
+                'exclude_full': exclude_full,
+                'is_virtual': is_virtual,
+                'event_types': event_types
+               }
 
-        json_response = self._request(self.uri + 'events', args=args, suppress_args_on_paginate=True)
+        json_response = self._request(self.uri + 'events', args=args, suppress_args_on_paginate=True, auth=True)
 
         tbl = Table(json_response)
 
