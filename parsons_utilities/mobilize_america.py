@@ -33,13 +33,13 @@ class MobilizeAmerica(object):
             logger.info('Mobilize America API Key missing. Calling methods that rely on private'
                         ' endpoints will fail.')
 
-    def _request(self, url, req_type='GET', post_data=None, args=None, auth=False, suppress_args_on_paginate=False): #suppress_args_on_paginate added 9/8/21 to correct for behavior on some endpoints where the "next" URL already contains the query params that "args" wants to pass in (causing the request to fail)
+    def _request(self, url, req_type='GET', post_data=None, args=None, auth=False, suppress_args_on_paginate=False, api_key=None): #suppress_args_on_paginate added 9/8/21 to correct for behavior on some endpoints where the "next" URL already contains the query params that "args" wants to pass in (causing the request to fail)
         if auth:
 
-            if not self.api_key:
+            if not api_key:
                 raise TypeError('This method requires an api key.')
             else:
-                header = {'Authorization': 'Bearer ' + self.api_key}
+                header = {'Authorization': 'Bearer ' + api_key}
 
         else:
             header = None
