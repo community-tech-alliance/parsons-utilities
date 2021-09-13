@@ -198,6 +198,9 @@ class MobilizeAmerica(object):
             self._request(self.uri + 'organizations/' + organization_id + '/events', args=args,
                           suppress_args_on_paginate=True, auth=auth, api_key=api_key))
 
+        #organization_id is not included in the /events payload, so we'll add it ourselves
+        tbl.add_column('organization_id',value=organization_id)
+
         if tbl.num_rows > 0:
 
             tbl.unpack_dict('sponsor')
