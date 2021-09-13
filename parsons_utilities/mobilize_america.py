@@ -122,13 +122,14 @@ class MobilizeAmerica(object):
 
             return json_response
 
-    def get_events(self, organization_id=None, updated_since=None, timeslot_start=None,
-                   timeslot_end=None, timeslots_table=False, unpack_timeslots=True, max_timeslots=None, zipcode=None,
-                   max_dist=None, visibility=None,
-                   exclude_full=False, is_virtual=None, event_types=None, auth=False, api_key=None,
-                   output_format='Parsons'):
+    def get_organization_events(self, organization_id='1', updated_since=None, timeslot_start=None,
+                                timeslot_end=None, timeslots_table=False, unpack_timeslots=True, max_timeslots=None,
+                                zipcode=None,
+                                max_dist=None, visibility=None,
+                                exclude_full=False, is_virtual=None, event_types=None, auth=False, api_key=None,
+                                output_format='Parsons'):
         """
-        Fetch all public events on the platform.
+        Fetch all events on the platform for a specific platform. (The endpoint /events, which retrieves all events across organizations, is now deprecated.)
 
 
         `Args:`
@@ -184,20 +185,18 @@ class MobilizeAmerica(object):
         if output_format not in valid_output_formats:
             raise ValueError(f'Invalid output_format (must be one of: {self.output_formats}')
 
-        if isinstance(organization_id, (str, int)):
-            organization_id = [organization_id]
-
-        args = {'organization_id': organization_id,
-                'updated_since': date_to_timestamp(updated_since),
-                'timeslot_start': self._time_parse(timeslot_start),
-                'timeslot_end': self._time_parse(timeslot_end),
-                'zipcode': zipcode}
+        args = {  # 'organization_id': organization_id,
+            'updated_since': date_to_timestamp(updated_since),
+            'timeslot_start': self._time_parse(timeslot_start),
+            'timeslot_end': self._time_parse(timeslot_end),
+            'zipcode': zipcode}
 
         if api_key:
             auth = True
 
         tbl = Table(
-            self._request(self.uri + 'events', args=args, suppress_args_on_paginate=True, auth=auth, api_key=api_key))
+            self._request(self.uri + 'organizations/' + organization_id + '/events', args=args,
+                          suppress_args_on_paginate=True, auth=auth, api_key=api_key))
 
         if tbl.num_rows > 0:
 
