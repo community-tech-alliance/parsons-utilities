@@ -2,8 +2,8 @@ import petl
 import json
 import io
 import gzip
-import files
-import zip_archive
+import parsons_utilities.files as files
+import parsons_utilities.zip_archive as zip_archive
 
 
 class ToFrom(object):

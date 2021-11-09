@@ -1,6 +1,6 @@
 import os
 import zipfile
-from files import create_temp_directory
+from parsons_utilities.files import create_temp_directory
 
 
 def create_archive(archive_path, file_path, file_name=None, if_exists='replace'):
