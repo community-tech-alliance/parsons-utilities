@@ -20,6 +20,6 @@ setuptools.setup(
     project_urls = {
     },
     license='MIT',
-    packages=['parsons_utilities'],
+    packages=['utilities','ngpvan'],
     install_requires=required
 )
