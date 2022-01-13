@@ -1,6 +1,6 @@
 """NGPVAN Activist Code Endpoints"""
 
-from parsons_utilities.table import Table
+from utilities.table import Table
 from ngpvan.utilities import action_parse
 import logging
 

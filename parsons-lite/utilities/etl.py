@@ -517,7 +517,7 @@ class ETL(object):
         table_dict = table.select_rows(lambda row: isinstance(row[column], dict))
         table_dict.unpack_dict(column, prepend=False)
 
-        from parsons_utilities.table import Table
+        from utilities.table import Table
 
         # Use melt to pivot both sets of columns into their own Tables and clean out None values
         melted_list = Table(petl.melt(table_list.table, ignore_cols))
@@ -652,7 +652,7 @@ class ETL(object):
             A new parsons table containing the selected columnns
         """  # noqa: W605
 
-        from parsons_utilities.table import Table
+        from utilities.table import Table
 
         return Table(petl.cut(self.table, *columns))
 
@@ -688,7 +688,7 @@ class ETL(object):
             A new parsons table containing the selected rows
         """  # noqa: W605
 
-        from parsons_utilities.table import Table
+        from utilities.table import Table
 
         return Table(petl.select(self.table, *filters))
 
@@ -1068,6 +1068,6 @@ class ETL(object):
         if to_petl:
             return getattr(petl, petl_method)(self.table, *args, **kwargs)
 
-        from parsons_utilities.table import Table
+        from utilities.table import Table
 
         return Table(getattr(petl, petl_method)(self.table, *args, **kwargs))

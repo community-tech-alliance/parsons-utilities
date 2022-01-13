@@ -1,5 +1,5 @@
 """NGPVAN Signups Endpoints"""
-from parsons_utilities.table import Table
+from utilities.table import Table
 import logging
 
 logger = logging.getLogger(__name__)

@@ -9,7 +9,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name='parsons-utilities-test',
+    name='parsons-lite',
     version='0.0.1',
     author='Emily Cogsdill',
     author_email='emily.cogsdill@techallies.org',
@@ -20,6 +20,6 @@ setuptools.setup(
     project_urls = {
     },
     license='MIT',
-    packages=['utilities','ngpvan'],
+    packages=['parsons-lite'],
     install_requires=required
 )

@@ -1,6 +1,6 @@
 """NGPVAN Saved List Endpoints"""
 
-from parsons_utilities.table import Table
+from utilities.table import Table
 from parsons_utilities.utilities import cloud_storage
 import logging
 import uuid

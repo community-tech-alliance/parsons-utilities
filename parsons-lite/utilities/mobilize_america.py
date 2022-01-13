@@ -1,4 +1,4 @@
-from parsons_utilities.table import Table
+from utilities.table import Table
 from parsons_utilities.datetime import date_to_timestamp
 
 import json
