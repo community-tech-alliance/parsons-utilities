@@ -1,20 +1,20 @@
 import logging
-from parsons.ngpvan.events import Events
-from parsons.ngpvan.van_connector import VANConnector
-from parsons.ngpvan.people import People
-from parsons.ngpvan.saved_lists import SavedLists, Folders, ExportJobs
-from parsons.ngpvan.activist_codes import ActivistCodes
-from parsons.ngpvan.canvass_responses import CanvassResponses
-from parsons.ngpvan.survey_questions import SurveyQuestions
-from parsons.ngpvan.supporter_groups import SupporterGroups
-from parsons.ngpvan.codes import Codes
-from parsons.ngpvan.scores import Scores, FileLoadingJobs
-from parsons.ngpvan.signups import Signups
-from parsons.ngpvan.locations import Locations
-from parsons.ngpvan.bulk_import import BulkImport
-from parsons.ngpvan.changed_entities import ChangedEntities
-from parsons.ngpvan.custom_fields import CustomFields
-from parsons.ngpvan.targets import Targets
+from parsons_utilities.ngpvan.events import Events
+from parsons_utilities.ngpvan.van_connector import VANConnector
+from parsons_utilities.ngpvan.people import People
+from parsons_utilities.ngpvan.saved_lists import SavedLists, Folders, ExportJobs
+from parsons_utilities.ngpvan.activist_codes import ActivistCodes
+from parsons_utilities.ngpvan.canvass_responses import CanvassResponses
+from parsons_utilities.ngpvan.survey_questions import SurveyQuestions
+from parsons_utilities.ngpvan.supporter_groups import SupporterGroups
+from parsons_utilities.ngpvan.codes import Codes
+from parsons_utilities.ngpvan.scores import Scores, FileLoadingJobs
+from parsons_utilities.ngpvan.signups import Signups
+from parsons_utilities.ngpvan.locations import Locations
+from parsons_utilities.ngpvan.bulk_import import BulkImport
+from parsons_utilities.ngpvan.changed_entities import ChangedEntities
+from parsons_utilities.ngpvan.custom_fields import CustomFields
+from parsons_utilities.ngpvan.targets import Targets
 
 logger = logging.getLogger(__name__)
 

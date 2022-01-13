@@ -1,4 +1,4 @@
-from parsons.utilities import json_format
+from parsons_utilities.utilities import json_format
 import logging
 
 logger = logging.getLogger(__name__)

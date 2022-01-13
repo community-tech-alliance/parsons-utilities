@@ -1,4 +1,4 @@
-from parsons.ngpvan.van import VAN
+from parsons_utilities.ngpvan.van import VAN
 
 __all__ = [
     'VAN'

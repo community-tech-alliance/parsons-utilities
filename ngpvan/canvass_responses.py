@@ -1,6 +1,6 @@
 """NGPVAN Canvass Responses Endpoints"""
 
-from parsons.etl.table import Table
+from parsons_utilities.utilities.table import Table
 import logging
 
 logger = logging.getLogger(__name__)

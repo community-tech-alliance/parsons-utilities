@@ -1,6 +1,6 @@
-from parsons_utilities.etl import ETL
-from parsons_utilities.tofrom import ToFrom
-import parsons_utilities.files as files
+from parsons_utilities.utilities.etl import ETL
+from parsons_utilities.utilities.tofrom import ToFrom
+import parsons_utilities.utilities.files as files
 import petl
 import pickle
 import logging

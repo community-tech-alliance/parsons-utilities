@@ -1,7 +1,7 @@
 from suds.client import Client
 import logging
-from parsons.utilities import check_env
-from parsons.utilities.api_connector import APIConnector
+from parsons_utilities.utilities import check_env
+from parsons_utilities.utilities.api_connector import APIConnector
 
 logger = logging.getLogger(__name__)
 

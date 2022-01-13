@@ -1,7 +1,7 @@
 """NGPVAN Activist Code Endpoints"""
 
-from parsons.etl.table import Table
-from parsons.ngpvan.utilities import action_parse
+from parsons_utilities.table import Table
+from ngpvan.utilities import action_parse
 import logging
 
 logger = logging.getLogger(__name__)

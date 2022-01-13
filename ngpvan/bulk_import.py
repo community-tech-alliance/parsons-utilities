@@ -1,6 +1,6 @@
 """NGPVAN Bulk Import Endpoints"""
-from parsons.etl.table import Table
-from parsons.utilities import cloud_storage
+from parsons_utilities.utilities.table import Table
+from parsons_utilities.utilities import cloud_storage
 
 import logging
 import uuid

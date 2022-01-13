@@ -9,8 +9,8 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name='parsons-utilities',
-    version='0.0.21',
+    name='parsons-utilities-test',
+    version='0.0.0',
     author='Emily Cogsdill',
     author_email='emily.cogsdill@techallies.org',
     description='Parsons modules for Airbyte deployment',
